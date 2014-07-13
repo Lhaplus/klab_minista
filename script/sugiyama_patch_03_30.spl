@@ -1,0 +1,3 @@
+USE minista;
+ALTER TABLE `article` ADD COLUMN `visible` tinyint(1) DEFAULT 1;
+ALTER TABLE `item` ADD COLUMN `visible` tinyint(1) DEFAULT 1;

@@ -1,0 +1,18 @@
+@charset 'utf-8';
+
+#page-header {
+    background-color: rgba(255,255,255,0.9);
+    border-bottom: 4px solid $borderColor_a;
+    height: 60px;
+    left: 0;
+    right: 0;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+h1.tagline {
+  font-size: 50px;
+  margin: 0 0 100px 0;
+  text-shadow: 0 0 5px #000;
+}

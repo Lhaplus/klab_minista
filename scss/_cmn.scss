@@ -1,0 +1,41 @@
+@charset 'utf-8';
+
+// common ----------------------------------------------------------------------
+
+html, body, div, p, span, iframe,
+h1, h2, h3, h4, h5, h6, p,
+address, em, img, small, sub, sup, var, i,
+dl, dt, dd, ol, ul, li,
+form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td
+aside, footer, header, nav, section {
+  line-height: 1.2;
+}
+
+html {
+  height:100%; min-width: 980px;
+}
+body {
+  font-family: 'ヒラギノ角ゴ Pro W3',
+               'Hiragino Kaku Gothic Pro',
+               'Meiryo UI',
+               'メイリオ',
+               Verdana,
+               'ＭＳ Ｐゴシック',
+               sans-serif !important;
+  word-break: normal !important;
+  word-wrap: break-word !important;
+}
+
+p,span {
+  line-height: 1.2;
+}
+
+img {
+  vertical-align: bottom;
+}// 画像の下の隙間を削除
+
+h2,a {
+  word-break: normal;
+  word-wrap: break-word;
+}

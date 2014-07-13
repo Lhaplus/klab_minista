@@ -1,0 +1,730 @@
+@charset "UTF-8";
+html, body, div, p, span, iframe,
+h1, h2, h3, h4, h5, h6, p,
+address, em, img, small, sub, sup, var, i,
+dl, dt, dd, ol, ul, li,
+form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td
+aside, footer, header, nav, section {
+  line-height: 1.2; }
+
+html {
+  height: 100%;
+  min-width: 980px; }
+
+body {
+  font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'Meiryo UI', 'メイリオ', Verdana, 'ＭＳ Ｐゴシック', sans-serif !important;
+  word-break: normal !important;
+  word-wrap: break-word !important; }
+
+p, span {
+  line-height: 1.2; }
+
+img {
+  vertical-align: bottom; }
+
+h2, a {
+  word-break: normal;
+  word-wrap: break-word; }
+
+.mt0 {
+  margin-top: 0px !important; }
+
+.mb0 {
+  margin-bottom: 0px !important; }
+
+.mr0 {
+  margin-right: 0px !important; }
+
+.ml0 {
+  margin-left: 0px !important; }
+
+.pt0 {
+  padding-top: 0px !important; }
+
+.pb0 {
+  padding-bottom: 0px !important; }
+
+.pr0 {
+  padding-right: 0px !important; }
+
+.pl0 {
+  padding-left: 0px !important; }
+
+.mt5 {
+  margin-top: 5px !important; }
+
+.mb5 {
+  margin-bottom: 5px !important; }
+
+.mr5 {
+  margin-right: 5px !important; }
+
+.ml5 {
+  margin-left: 5px !important; }
+
+.pt5 {
+  padding-top: 5px !important; }
+
+.pb5 {
+  padding-bottom: 5px !important; }
+
+.pr5 {
+  padding-right: 5px !important; }
+
+.pl5 {
+  padding-left: 5px !important; }
+
+.mt10 {
+  margin-top: 10px !important; }
+
+.mb10 {
+  margin-bottom: 10px !important; }
+
+.mr10 {
+  margin-right: 10px !important; }
+
+.ml10 {
+  margin-left: 10px !important; }
+
+.pt10 {
+  padding-top: 10px !important; }
+
+.pb10 {
+  padding-bottom: 10px !important; }
+
+.pr10 {
+  padding-right: 10px !important; }
+
+.pl10 {
+  padding-left: 10px !important; }
+
+.mt15 {
+  margin-top: 15px !important; }
+
+.mb15 {
+  margin-bottom: 15px !important; }
+
+.mr15 {
+  margin-right: 15px !important; }
+
+.ml15 {
+  margin-left: 15px !important; }
+
+.pt15 {
+  padding-top: 15px !important; }
+
+.pb15 {
+  padding-bottom: 15px !important; }
+
+.pr15 {
+  padding-right: 15px !important; }
+
+.pl15 {
+  padding-left: 15px !important; }
+
+.mt20 {
+  margin-top: 20px !important; }
+
+.mb20 {
+  margin-bottom: 20px !important; }
+
+.mr20 {
+  margin-right: 20px !important; }
+
+.ml20 {
+  margin-left: 20px !important; }
+
+.pt20 {
+  padding-top: 20px !important; }
+
+.pb20 {
+  padding-bottom: 20px !important; }
+
+.pr20 {
+  padding-right: 20px !important; }
+
+.pl20 {
+  padding-left: 20px !important; }
+
+.mt25 {
+  margin-top: 25px !important; }
+
+.mb25 {
+  margin-bottom: 25px !important; }
+
+.mr25 {
+  margin-right: 25px !important; }
+
+.ml25 {
+  margin-left: 25px !important; }
+
+.pt25 {
+  padding-top: 25px !important; }
+
+.pb25 {
+  padding-bottom: 25px !important; }
+
+.pr25 {
+  padding-right: 25px !important; }
+
+.pl25 {
+  padding-left: 25px !important; }
+
+.mt30 {
+  margin-top: 30px !important; }
+
+.mb30 {
+  margin-bottom: 30px !important; }
+
+.mr30 {
+  margin-right: 30px !important; }
+
+.ml30 {
+  margin-left: 30px !important; }
+
+.pt30 {
+  padding-top: 30px !important; }
+
+.pb30 {
+  padding-bottom: 30px !important; }
+
+.pr30 {
+  padding-right: 30px !important; }
+
+.pl30 {
+  padding-left: 30px !important; }
+
+.mt35 {
+  margin-top: 35px !important; }
+
+.mb35 {
+  margin-bottom: 35px !important; }
+
+.mr35 {
+  margin-right: 35px !important; }
+
+.ml35 {
+  margin-left: 35px !important; }
+
+.pt35 {
+  padding-top: 35px !important; }
+
+.pb35 {
+  padding-bottom: 35px !important; }
+
+.pr35 {
+  padding-right: 35px !important; }
+
+.pl35 {
+  padding-left: 35px !important; }
+
+.mt40 {
+  margin-top: 40px !important; }
+
+.mb40 {
+  margin-bottom: 40px !important; }
+
+.mr40 {
+  margin-right: 40px !important; }
+
+.ml40 {
+  margin-left: 40px !important; }
+
+.pt40 {
+  padding-top: 40px !important; }
+
+.pb40 {
+  padding-bottom: 40px !important; }
+
+.pr40 {
+  padding-right: 40px !important; }
+
+.pl40 {
+  padding-left: 40px !important; }
+
+.mt45 {
+  margin-top: 45px !important; }
+
+.mb45 {
+  margin-bottom: 45px !important; }
+
+.mr45 {
+  margin-right: 45px !important; }
+
+.ml45 {
+  margin-left: 45px !important; }
+
+.pt45 {
+  padding-top: 45px !important; }
+
+.pb45 {
+  padding-bottom: 45px !important; }
+
+.pr45 {
+  padding-right: 45px !important; }
+
+.pl45 {
+  padding-left: 45px !important; }
+
+.mt50 {
+  margin-top: 50px !important; }
+
+.mb50 {
+  margin-bottom: 50px !important; }
+
+.mr50 {
+  margin-right: 50px !important; }
+
+.ml50 {
+  margin-left: 50px !important; }
+
+.pt50 {
+  padding-top: 50px !important; }
+
+.pb50 {
+  padding-bottom: 50px !important; }
+
+.pr50 {
+  padding-right: 50px !important; }
+
+.pl50 {
+  padding-left: 50px !important; }
+
+.mt55 {
+  margin-top: 55px !important; }
+
+.mb55 {
+  margin-bottom: 55px !important; }
+
+.mr55 {
+  margin-right: 55px !important; }
+
+.ml55 {
+  margin-left: 55px !important; }
+
+.pt55 {
+  padding-top: 55px !important; }
+
+.pb55 {
+  padding-bottom: 55px !important; }
+
+.pr55 {
+  padding-right: 55px !important; }
+
+.pl55 {
+  padding-left: 55px !important; }
+
+.mt60 {
+  margin-top: 60px !important; }
+
+.mb60 {
+  margin-bottom: 60px !important; }
+
+.mr60 {
+  margin-right: 60px !important; }
+
+.ml60 {
+  margin-left: 60px !important; }
+
+.pt60 {
+  padding-top: 60px !important; }
+
+.pb60 {
+  padding-bottom: 60px !important; }
+
+.pr60 {
+  padding-right: 60px !important; }
+
+.pl60 {
+  padding-left: 60px !important; }
+
+.mt65 {
+  margin-top: 65px !important; }
+
+.mb65 {
+  margin-bottom: 65px !important; }
+
+.mr65 {
+  margin-right: 65px !important; }
+
+.ml65 {
+  margin-left: 65px !important; }
+
+.pt65 {
+  padding-top: 65px !important; }
+
+.pb65 {
+  padding-bottom: 65px !important; }
+
+.pr65 {
+  padding-right: 65px !important; }
+
+.pl65 {
+  padding-left: 65px !important; }
+
+.mt70 {
+  margin-top: 70px !important; }
+
+.mb70 {
+  margin-bottom: 70px !important; }
+
+.mr70 {
+  margin-right: 70px !important; }
+
+.ml70 {
+  margin-left: 70px !important; }
+
+.pt70 {
+  padding-top: 70px !important; }
+
+.pb70 {
+  padding-bottom: 70px !important; }
+
+.pr70 {
+  padding-right: 70px !important; }
+
+.pl70 {
+  padding-left: 70px !important; }
+
+.mt75 {
+  margin-top: 75px !important; }
+
+.mb75 {
+  margin-bottom: 75px !important; }
+
+.mr75 {
+  margin-right: 75px !important; }
+
+.ml75 {
+  margin-left: 75px !important; }
+
+.pt75 {
+  padding-top: 75px !important; }
+
+.pb75 {
+  padding-bottom: 75px !important; }
+
+.pr75 {
+  padding-right: 75px !important; }
+
+.pl75 {
+  padding-left: 75px !important; }
+
+.mt80 {
+  margin-top: 80px !important; }
+
+.mb80 {
+  margin-bottom: 80px !important; }
+
+.mr80 {
+  margin-right: 80px !important; }
+
+.ml80 {
+  margin-left: 80px !important; }
+
+.pt80 {
+  padding-top: 80px !important; }
+
+.pb80 {
+  padding-bottom: 80px !important; }
+
+.pr80 {
+  padding-right: 80px !important; }
+
+.pl80 {
+  padding-left: 80px !important; }
+
+.mt85 {
+  margin-top: 85px !important; }
+
+.mb85 {
+  margin-bottom: 85px !important; }
+
+.mr85 {
+  margin-right: 85px !important; }
+
+.ml85 {
+  margin-left: 85px !important; }
+
+.pt85 {
+  padding-top: 85px !important; }
+
+.pb85 {
+  padding-bottom: 85px !important; }
+
+.pr85 {
+  padding-right: 85px !important; }
+
+.pl85 {
+  padding-left: 85px !important; }
+
+.mt90 {
+  margin-top: 90px !important; }
+
+.mb90 {
+  margin-bottom: 90px !important; }
+
+.mr90 {
+  margin-right: 90px !important; }
+
+.ml90 {
+  margin-left: 90px !important; }
+
+.pt90 {
+  padding-top: 90px !important; }
+
+.pb90 {
+  padding-bottom: 90px !important; }
+
+.pr90 {
+  padding-right: 90px !important; }
+
+.pl90 {
+  padding-left: 90px !important; }
+
+.mt95 {
+  margin-top: 95px !important; }
+
+.mb95 {
+  margin-bottom: 95px !important; }
+
+.mr95 {
+  margin-right: 95px !important; }
+
+.ml95 {
+  margin-left: 95px !important; }
+
+.pt95 {
+  padding-top: 95px !important; }
+
+.pb95 {
+  padding-bottom: 95px !important; }
+
+.pr95 {
+  padding-right: 95px !important; }
+
+.pl95 {
+  padding-left: 95px !important; }
+
+.mt100 {
+  margin-top: 100px !important; }
+
+.mb100 {
+  margin-bottom: 100px !important; }
+
+.mr100 {
+  margin-right: 100px !important; }
+
+.ml100 {
+  margin-left: 100px !important; }
+
+.pt100 {
+  padding-top: 100px !important; }
+
+.pb100 {
+  padding-bottom: 100px !important; }
+
+.pr100 {
+  padding-right: 100px !important; }
+
+.pl100 {
+  padding-left: 100px !important; }
+
+.font-bold {
+  font-weight: bold; }
+
+.font-normal {
+  font-weight: normal; }
+
+.txt-noline {
+  text-decoration: none; }
+
+.color_a {
+  color: #333333; }
+
+.color_b {
+  color: #999999; }
+
+.color_c {
+  color: white; }
+
+.color_d {
+  color: #d80100; }
+
+.color_e {
+  color: #d96d00; }
+
+.txt10 {
+  font-size: 10px; }
+
+.txt11 {
+  font-size: 11px; }
+
+.txt12 {
+  font-size: 12px; }
+
+.txt14 {
+  font-size: 14px; }
+
+.txt15 {
+  font-size: 15px; }
+
+.txt16 {
+  font-size: 16px; }
+
+.txt18 {
+  font-size: 18px; }
+
+.txt20 {
+  font-size: 20px; }
+
+.txt22 {
+  font-size: 22px; }
+
+.txt24 {
+  font-size: 24px; }
+
+.txt26 {
+  font-size: 26px; }
+
+.txt28 {
+  font-size: 28px; }
+
+.txt30 {
+  font-size: 30px; }
+
+.txtRed {
+  color: #d80100 !important; }
+
+.txtGreen {
+  color: #50C941; }
+
+.txtYellow {
+  color: #9b8200; }
+
+.fl {
+  float: left !important; }
+
+.fr {
+  float: right !important; }
+
+.cb {
+  clear: both !important; }
+
+.link-style {
+  color: #339900; }
+  .link-style:hover {
+    color: #006600; }
+    .link-style:hover span {
+      text-decoration: none; }
+
+.clearfix {
+  *zoom: 1; }
+  .clearfix:after {
+    content: '.';
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden; }
+
+#page-footer {
+  background-color: #f0f0f0;
+  border-top: 1px solid #cccccc;
+  height: 220px; }
+
+#page-header {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-bottom: 4px solid #cccccc;
+  height: 60px;
+  left: 0;
+  right: 0;
+  position: fixed;
+  top: 0;
+  z-index: 1000; }
+
+h1.tagline {
+  font-size: 50px;
+  margin: 0 0 100px 0;
+  text-shadow: 0 0 5px #000; }
+
+/* Non-responsive overrides
+ *
+ * Utilitze the following CSS to disable the responsive-ness of the container,
+ * grid system, and navbar.
+ */
+/* Reset the container */
+.container {
+  max-width: none !important;
+  width: 970px; }
+
+.container .navbar-header,
+.container .navbar-collapse {
+  margin-right: 0;
+  margin-left: 0; }
+
+/* Always float the navbar header */
+.navbar-header {
+  float: left; }
+
+/* Undo the collapsing navbar */
+.navbar-collapse {
+  display: block !important;
+  height: auto !important;
+  padding-bottom: 0;
+  overflow: visible !important; }
+
+.navbar-toggle {
+  display: none; }
+
+.navbar-brand {
+  margin-left: -15px; }
+
+/* Always apply the floated nav */
+.navbar-nav {
+  float: left;
+  margin: 0; }
+
+.navbar-nav > li {
+  float: left; }
+
+.navbar-nav > li > a {
+  padding: 15px; }
+
+/* Redeclare since we override the float above */
+.navbar-nav.navbar-right {
+  float: right; }
+
+/* Undo custom dropdowns */
+.navbar .open .dropdown-menu {
+  position: absolute;
+  float: left;
+  background-color: #fff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-width: 0 1px 1px;
+  border-radius: 0 0 4px 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+
+.navbar .open .dropdown-menu > li > a {
+  color: #333; }
+
+.navbar .open .dropdown-menu > li > a:hover,
+.navbar .open .dropdown-menu > li > a:focus,
+.navbar .open .dropdown-menu > .active > a,
+.navbar .open .dropdown-menu > .active > a:hover,
+.navbar .open .dropdown-menu > .active > a:focus {
+  color: #fff !important;
+  background-color: #428bca !important; }
+
+.navbar .open .dropdown-menu > .disabled > a,
+.navbar .open .dropdown-menu > .disabled > a:hover,
+.navbar .open .dropdown-menu > .disabled > a:focus {
+  color: #999 !important;
+  background-color: transparent !important; }
+
+#side-area {
+  border: 4px solid #cccccc;
+  padding: 15px;
+  width: 300px; }

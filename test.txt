@@ -1,0 +1,12 @@
+ntion(iueo;
+}ction hello() {aaaaddf	echo "hello";aaa
+fds
+function(){
+tekitou;
+}
+function tekitou(){
+}
+
+function world(){
+ echo "tekitou";
+}

@@ -1,0 +1,131 @@
+<?php
+/*
+|--------------------------------------------------------------------------
+| 利用可能な変数一覧
+|
+| 'minista' = 説明
+|--------------------------------------------------------------------------
+ */
+/*
+|--------------------------------------------------------------------------
+| Head tag settings.
+|
+| 'title' = Title of HTML5.
+| 'meta_keywords' = Words or phrases which you want to attach with this page.
+| 'meta_description' = Awesome description here
+|
+| 'javascript_paths' = Directory where the javascript files will be created.
+| 'css_paths' = Directory where the css files will be created.
+|--------------------------------------------------------------------------
+ */
+
+$head_data['title'] = '最低限知っておくべきただ一つのサイト - Minista.jp';
+$head_data['meta_keywords'] = array(
+	'Minista',
+	'Minista.jp',
+	'ミニスタ',
+	'minimum standard',
+	'ミニマムスタンダード',
+	'最低限',
+	'最低基準',
+	'まとめ'
+);
+$head_data['meta_description'] = '最低限知っておくべきただ一つのサイト';
+
+$head_data['javascript_paths'] = array(
+	'js/jquery/jquery-1.8.3.js',
+	'js/jquery/ui/jquery-ui.js'
+);
+$head_data['css_paths'] = array(
+	'css/minista/detail.css',
+	'css/minista/pure-min.css',
+	'css/minista/common.css'
+);
+?>
+
+<!DOCTYPE html>
+<html lang='ja-JP'>
+	<?php $this->load->view('templates/head', $head_data) ?>
+	<body>
+		<?php $this->load->view('templates/header') ?>
+		<div class="container">
+			<div class="title-area">
+				<div class="minista-title">
+					<div class="clearfix">
+						<div class="minista-img">
+							<img src="image/fb_jmec_500.jpg">
+						</div><!-- minista-img -->
+						<div class="minista-text">
+							<h1>新入社員なら最低限知っておくべき５つのビジネスマナー</h1>
+							<span class="minista-view">1234 view</span>
+							<span class="minista-stock">★ 12</span>
+							<span class="minista-version">バージョン：2</span>
+
+							<?php $this->load->view('templates/social_botton') ?>
+
+						</div><!-- minista-text -->
+					</div><!-- clearfix -->
+				</div><!-- minista-title -->
+			</div><!-- title-area -->
+
+			<div class="clearfix">
+				<div class="main">
+					<div class="minista-main">
+						<h2>1. 健康な体</h2>
+						<p>これがないとだめですね</p>
+						<h2>2. 謙遜</h2>
+						<p>これもひつようですね</p>
+						<h2>3. 経験</h2>
+						<p>これは今につきます</p>
+						<h2>4. 忍耐</h2>
+						<p>辛いことも多いですが頑張りましょう</p>
+						<h2>5. 謙虚な心</h2>
+						<p>謙虚は大事です</p>
+					</div><!-- minista-main -->
+
+					<div class="related-minista">
+						<h3>関連するミニスタ</h3>
+						<div class="minista-list">
+							<div class="clearfix">
+								<div class="minista-img">
+									<img src="image/fb_jmec_500.jpg">
+								</div><!-- minista-img -->
+								<div class="minista-text">
+									<p class="minista-title">新入社員なら最低限知っておくべき５つのビジネスマナー</p>
+									<span class="minista-view">1234 view</span>
+									<span class="minista-stock">★ 12</span>
+								</div><!-- minista-text -->
+							</div><!-- clearfix -->
+						</div><!-- minista-list -->
+					</div><!-- related-minista -->
+
+					<div class="category-menu">
+						<h3>カテゴリ一覧</h3>
+						<div class="pure-menu pure-menu-open pure-menu-horizontal">
+							<ul>
+								<li class="pure-menu-selected"><a href="#">TOP</a></li>
+								<li><a href="#" class="l">ライフ</a></li>
+								<li><a href="#" class="b">ビジネス</a></li>
+								<li><a href="#" class="g">ガール</a></li>
+								<li><a href="#" class="t">ティーン</a></li>
+								<li><a href="#" class="e">エンタメ</a></li>
+							</ul>
+						</div>
+					</div><!-- pure-meny -->
+				</div><!-- main -->
+				<div class="side">
+					<div class="ad-top-right">
+						<img src="image/ad_300_250.png" />
+					</div>
+
+					<?php $this->load->view('templates/minista_list_new.php') ?>
+					<?php $this->load->view('templates/what_minista.php') ?>
+
+				</div><!-- side -->
+			</div><!-- clearfix -->
+		</div><!-- container -->
+
+		<?php $this->load->view('templates/footer') ?>
+
+	</body>
+</html>

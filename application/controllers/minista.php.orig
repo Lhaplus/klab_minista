@@ -1,0 +1,738 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+class Minista extends CI_Controller {
+	var $SUBDIR = 'minista/';
+	var $path = 'minista/';
+
+	var $IS_OK = 0;
+	var $IS_ERROR = 1;
+	var $MY_MINISTA_ITEM_MAX_COUNT = 30;
+
+	public function __construct() {
+		parent::__construct();
+		$this->load->model('List_model', 'minista');
+		$this->load->model('tank_auth/users', 'user');
+		$this->load->model('History_model');
+		$this->load->model('Article_model');
+		$this->load->model('Ranking_model');
+		$this->load->model('My_minista_model');
+		$this->load->model('Recommend_model');
+		$this->load->model('Search_model');
+		$this->load->model('Category_model');
+		$this->load->model('Recommend_model');
+		$this->load->library('minista_library');
+		$this->load->library('ranking_time');
+		$this->load->library('template');
+		$this->load->library('device');
+		$this->load->library('pager');
+		$this->load->helper('url');
+		$this->load->helper('form');
+		$this->load->helper('minista_helper');
+		$this->load->library('pagination');
+		$this->load->library('tank_auth');
+		$this->load->library('session');
+
+		$this->path = $this->device->get_sp_path() . $this->SUBDIR;
+		
+	}
+
+	/*
+	|---------------------------------------------------------------------
+	| Template index
+	|---------------------------------------------------------------------
+	*/
+	public function index($offset = 0, $category = 'top') {
+		$head_path = $this->path . 'index_head';
+		$body_path = $this->path . 'index';
+		
+		$categories = $this->Category_model->get_all_categories();
+		
+		//$data['articles'] = $this->Article_model->get_all_articles();
+		$popular_articles = $this->Ranking_model->get_view_ranking(1);
+		
+		$data['now_category'] = 0;
+		foreach($categories as $c) {
+			if($category === $c['name']) {
+				$popular_articles = $this->Ranking_model->get_view_ranking(1,NULL,$c['id']);
+				$data['now_category'] = $c['id'];
+			}
+		}
+		
+		$data['articles'] = array();
+		if(isset($popular_articles)) {
+			foreach($popular_articles as $article) {
+				$row = $this->Article_model->get_minista($article['article_id']);
+				$data['articles'][] = $row['article'];
+			}
+		}
+		
+		$base_url = base_url() . "minista/index";
+		$total_rows = count($data['articles']);
+		$limit = 10;
+		
+		$data['pager'] = $this->pager->create_pager($base_url,$total_rows,$limit,$offset,$data['articles']);
+		
+		//$data['active_articles'] = $this->Article_model->get_active_articles(1/24);
+		
+		$data['categories'] = $categories;
+		
+		$this->session->set_userdata('now_category', $data['now_category']);
+		
+		$this->template->load('base_index', $head_path, $body_path, $data);
+	}
+
+	public function ranking(){ //単体テスト待ち
+		$head_path = $this->path . 'ranking_head';
+		$body_path = $this->path . 'ranking';
+		
+		//daily
+		$time = $this->ranking_time->get_daily_ranking_time();
+		$view_daily = $this->Ranking_model->get_view_ranking(1, $time);
+		$favorite_daily = $this->Ranking_model->get_favorite_ranking(1, $time);
+		if($view_daily == NULL || $favorite_daily == NULL) {
+			$time = $this->ranking_time->get_daily_ranking_time(1);
+			$view_daily = $this->Ranking_model->get_view_ranking(1, $time);
+			$favorite_daily = $this->Ranking_model->get_favorite_ranking(1, $time);
+		}
+		
+		//weekly
+		$time = $this->ranking_time->get_weekly_ranking_time();
+		$view_weekly = $this->Ranking_model->get_view_ranking(7, $time);
+		$favorite_weekly = $this->Ranking_model->get_favorite_ranking(7, $time);
+		if($view_weekly == NULL || $favorite_weekly == NULL) {
+			$time = $this->ranking_time->get_weekly_ranking_time(1);
+			$view_weekly = $this->Ranking_model->get_view_ranking(7, $time);
+			$favorite_weekly = $this->Ranking_model->get_favorite_ranking(7, $time);
+		}
+		
+		
+		//monthly
+		$time = $this->ranking_time->get_monthly_ranking_time();
+		$days = $this->ranking_time->get_month_length($time);
+		$view_monthly = $this->Ranking_model->get_view_ranking($days, $time);
+		$favorite_monthly = $this->Ranking_model->get_favorite_ranking($days, $time);
+		if($view_monthly == NULL || $favorite_monthly == NULL) {
+			$time = $this->ranking_time->get_monthly_ranking_time(1);
+			$days = $this->ranking_time->get_month_length($time);;
+			$view_monthly = $this->Ranking_model->get_view_ranking($days, $time);
+			$favorite_monthly = $this->Ranking_model->get_favorite_ranking($days, $time);
+		}
+		
+		
+		$data = array(
+			'daily' => array(
+				'view' => $view_daily,
+				'favorite' => $favorite_daily,
+			),
+			'weekly' => array(
+				'view' => $view_weekly,
+				'favorite' => $favorite_weekly,
+			),
+			'monthly' => array(
+				'view' => $view_monthly,
+				'favorite' => $favorite_monthly,
+			),
+		);
+		
+		$categories = $this->Category_model->get_all_categories();
+		$data['categories'] = $categories;
+		
+		$this->template->load('base_index', $head_path, $body_path, $data);
+	}
+	
+	public function batch_ranking() { //統合テスト待ち
+		if($this->input->is_cli_request()) {
+			$categories = $this->Category_model->get_all_categories();
+			$this->Ranking_model->create_view_ranking(1);
+			$this->Ranking_model->create_favorite_ranking(1);
+			foreach($categories as $c) {
+				$this->Ranking_model->create_view_ranking(1, NULL, $c['id']);
+				$this->Ranking_model->create_favorite_ranking(1, NULL, $c['id']);
+			}
+			$week = date("w");
+			$day = date("j");
+			if($week == 1) { //月曜
+				$this->Ranking_model->create_view_ranking(7);
+				$this->Ranking_model->create_favorite_ranking(7);
+				foreach($categories as $c) {
+				$this->Ranking_model->create_view_ranking(7, NULL, $c['id']);
+				$this->Ranking_model->create_favorite_ranking(7, NULL, $c['id']);
+			}
+			}
+			if($day == 1) { //一日
+				$days = $this->ranking_time->get_last_month_length();
+				$this->Ranking_model->create_view_ranking($days);
+				$this->Ranking_model->create_favorite_ranking($days);
+				foreach($categories as $c) {
+				$this->Ranking_model->create_view_ranking($days, NULL, $c['id']);
+				$this->Ranking_model->create_favorite_ranking($days, NULL, $c['id']);
+			}
+			}
+		} else {
+			redirect('index');
+		}
+	}
+
+	/*
+	|---------------------------------------------------------------------
+	| Template article page
+	|---------------------------------------------------------------------
+	*/
+	 
+	//状態：手つかず（無印）-> 設計中 -> 仕様確認中 -> 単体テスト待ち -> 統合テスト待ち -> β版
+	
+	//状態：単体テスト待ち
+	public function article($id) {
+		$head_path = $this->path . 'article_head';
+		$body_path = $this->path . 'article';
+		$user_id = $this->tank_auth->get_user_id();
+
+		$data= $this->Article_model->get_minista($id);
+		$data['folders'] = $this->My_minista_model->get_user_all_folders($user_id);
+
+		if(!isset($data['article'])) {
+			redirect('minista/index');
+		}
+		
+		$this->Article_model->update_view_count($id);
+		
+		$user_id = 0;
+		if($this->tank_auth->is_logged_in()) {
+			$user_id = $this->tank_auth->get_user_id();
+			$this->History_model->add_view_history($user_id, $id, time());
+		}
+		$last_article_id = $this->session->userdata('last_article_id');
+		$footprint_time = $this->session->userdata('footprint_time');
+		$now = time();
+		if(isset($last_article_id, $footprint_time) && $last_article_id > 0) {
+			if($now - $this->session->userdata('footprint_time') < 3600 && $last_article_id != $id) {
+				$this->Recommend_model->add_recommend_map($user_id, $last_article_id, $id);
+			}
+		}
+		
+		$this->session->set_userdata('last_article_id', $id);
+		$this->session->set_userdata('footprint_time', $now);
+		
+		$data['recommend_articles'] = $this->Recommend_model->get_recommend($id, 7);
+		
+		$this->template->load('article_page', $head_path, $body_path, $data);
+	}
+	
+	public function write() { //状態：統合テスト待ち
+		$head_path = $this->path . 'write_head';
+		$body_path = $this->path . 'write';
+		
+		if(!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/index');
+		}
+		
+		$data = array(
+			'categories' => $this->Category_model->get_all_categories(),
+			'num_items' => 1
+		);
+		$this->template->load('base_index', $head_path, $body_path, $data);
+	}
+	
+	public function write_form() { //状態：統合テスト待ち
+		$head_path = $this->path . 'write_form_head';
+		$body_path = $this->path . 'write_form';
+		$head_error_path = $this->path . 'write_head';
+		$body_error_path = $this->path . 'write';
+		
+		if(!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/index');
+		}
+
+		// form validation
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('t_target',   'ターゲット', 'required|max_length[20]');
+		$this->form_validation->set_rules('t_do',       '何を',       'required|max_length[20]');
+		$this->form_validation->set_rules('t_what',     '何',         'required|max_length[20]');
+		$this->form_validation->set_rules('tags[]',   'タグ',      'max_length[20]');
+		$this->form_validation->set_rules('category', 'カテゴリ', 'required');
+		$this->form_validation->set_rules('image_path',   '画像パス',     'max_length[100]');
+		$this->form_validation->set_rules('image_title',  '画像タイトル', 'max_length[100]');
+		$this->form_validation->set_rules('image_author', '画像著者',     'max_length[100]');
+
+		$items_count = count($this->input->post('items'));
+		for($i = 0; $i < $items_count; $i++){
+			$this->form_validation->set_rules('items[' . $i . '][title]', 'リストタイトル', 'required|max_length[100]');
+			$this->form_validation->set_rules('items[' . $i . '][explanation]', 'リスト説明', 'required|max_length[100]');
+		}
+
+		if($items_count > $this->MY_MINISTA_ITEM_MAX_COUNT){
+			// error
+			 $data = array(
+				'categories' => $this->Category_model->get_all_categories(),
+				'num_items' => $items_count
+			);
+			$this->template->load('base_index', $head_error_path, $body_error_path, $data);
+		}
+		if($this->form_validation->run() == FALSE){
+			// error
+			 $data = array(
+				'categories' => $this->Category_model->get_all_categories(),
+				'num_items' => $items_count
+			);
+			$this->template->load('base_index', $head_error_path, $body_error_path, $data);
+		}else{
+			// success
+			if(10 > $items_count){
+				$t_how_many = $items_count . 'つの';
+			}else{
+				$t_how_many = $items_count . 'この';
+			}
+			$minista = array(
+				'user_id' => $this->tank_auth->get_user_id(),
+				't_target' => $this->input->post('t_target'),
+				't_do' => $this->input->post('t_do'),
+				't_how_many' => $t_how_many,
+				't_what' => $this->input->post('t_what'),
+				'items' => $this->input->post('items'),
+				'category_id' => $this->input->post('category'),
+				'tags' => $this->input->post('tags'),
+				'image_path' => $this->input->post('image_path'),
+				'image_title' => $this->input->post('image_title'),
+				'image_author' => $this->input->post('image_author')
+			);
+			$this->Article_model->write_article($minista);
+			$this->template->load('base_index', $head_path, $body_path, $minista);
+		}
+	}
+	
+	public function add_item() { //状態：統合テスト待ち
+		if($this->input->is_ajax_request()) {
+			
+			if($this->tank_auth->is_logged_in()) {
+				redirect('/auth/index');
+			}
+			
+			$data = array(
+				'user_id' => $this->tank_auth->get_user_id(),
+				'article_id' => $this->input->post('article_id'),
+				'title' => $this->input->post('title'),
+				'explanation' => $this->input->post('explanation'),
+				'good' => 0,
+				'bad' => 0,
+				'stamp' => date(DATE_ATOM),
+			);
+			$this->Article_model->add_item($data);
+			$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode($data));
+		} else {
+			redirect('index');
+		}
+	}
+
+	public function vote() {//単体テスト待ち
+		if($this->input->is_ajax_request()) {
+			if ($this->tank_auth->is_logged_in()){
+				$user_id = $this->tank_auth->get_user_id();
+				$article_id = $this->input->post('article_id');
+				$item_id = $this->input->post('item_id');
+				$is_good = $this->input->post('is_good');
+				$this->History_model->add_vote_history($user_id, $article_id, $item_id, $is_good, time());
+			} else {
+				redirect('/auth/index');
+			}
+		} else {
+			redirect('index');
+		}
+	}
+
+	// 単体テスト待ち
+	private function _regist_favorite($article_id) {
+		if ($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$this->History_model->add_favorite_history($user_id, $article_id, time());
+			$this->Article_model->update_favorite_count($article_id);
+		} else {
+			return NULL;
+		}
+	}
+	
+	public function search($page = 0, /*$category_id = 0,*/ $option = 0) { //統合テスト待ち
+		$head_path = $this->path . 'search_head';
+		$body_path = $this->path . 'search';
+		
+		$keyword = $this->input->get('keyword');
+		switch($option) {
+		case 1: //Tag
+			$data['articles'] = $this->Search_model->search_by_tag_name($keyword);
+			break;
+		default:
+			//$data['articles'] = $this->Search_model->search_by_keyword($keyword, $category_id);
+			$data['articles'] = $this->Search_model->search_by_keyword($keyword, 0);
+		}
+		
+		$base_url = base_url() . "minista/search";
+		$total_rows = count($data['articles']);
+		$limit = 10;
+		
+<<<<<<< HEAD
+		$data['pager'] = $this->pager->create_pager($base_url, $total_rows, $limit, $page, $data['articles'], "?keyword=".$keyword);
+=======
+		$data['pager'] = $this->pager->create_pager($base_url, $total_rows, $limit, 0, $data['articles']);
+>>>>>>> b7a3f7cb64f99a3d546183fb77d6fcbe5b24e316
+		
+		$categories = $this->Category_model->get_all_categories();
+		$data['categories'] = $categories;
+		
+		//$data['now_category'] = $category_id;
+		$data['now_category'] = 0;
+		//$data['keyword'] = $keyword;
+		
+		$this->template->load('base_index', $head_path, $body_path, $data);
+	}
+
+	/*
+	|---------------------------------------p------------------------------
+	| Template sub page
+	|---------------------------------------------------------------------
+	*/
+	public function about() {
+		$head_path = $this->path . 'about_head';
+		$body_path = $this->path . 'about';
+		$data = array(
+			'h1_title' => "Minista.jpとは",
+		);
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+
+	}
+	public function term() {
+		$head_path = $this->path . 'term_head';
+		$body_path = $this->path . 'term';
+		$data = array(
+			'h1_title' => "利用規約",
+		);
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+	}
+	public function privacy() {
+		$head_path = $this->path . 'privacy_head';
+		$body_path = $this->path . 'privacy';
+		$data = array(
+			'h1_title' => "プライバシー",
+		);
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+	}
+	public function help() {
+		$head_path = $this->path . 'help_head';
+		$body_path = $this->path . 'help';
+		$data = array(
+			'h1_title' => "ヘルプ",
+		);
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+	}
+	public function info() {
+		$head_path = $this->path . 'info_head';
+		$body_path = $this->path . 'info';
+		$data = array(
+			'h1_title' => "お問い合わせ",
+		);
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+	}
+	public function message($message = "") {
+		$head_path = $this->path . 'message_head';
+		$body_path = $this->path . 'message';
+		$data["message"] = $message;
+		$this->template->load('sub_page', $head_path, $body_path, $data);
+	}
+
+	/*
+	|---------------------------------------------------------------------
+	| Template user page
+	|---------------------------------------------------------------------
+	*/
+
+	public function my_page() {
+		$head_path = $this->path . 'my_page_head';
+		$body_path = $this->path . 'my_page';
+		
+		// セッションを調べる
+		if ($this->tank_auth->is_logged_in()){
+
+			// ユーザ基本情報取得
+			$user_id = $this->tank_auth->get_user_id();
+			$data['username'] = $this->tank_auth->get_username();
+			$query = $this->user->get_email_by_id($user_id, TRUE);
+			$data['email'] = $query->email;
+			
+			// ユーザ履歴取得
+			$data['histories'] = $this->History_model->get_recent_history_limit($user_id, 10);
+			foreach($data['histories'] as $key => $history){
+				$article= $this->Article_model->get_minista($history['article_id']);
+				$data['histories'][$key]['title'] = $article['article']['title'];
+			}
+			
+			$this->template->load('user_page', $head_path, $body_path, $data);
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	public function my_minista() {
+		$head_path = $this->path . 'my_minista_head';
+		$body_path = $this->path . 'my_minista';
+
+		if ($this->tank_auth->is_logged_in()){
+
+			$user_id = $this->tank_auth->get_user_id();
+			
+			$data['folders'] = $this->My_minista_model->get_user_all_folders($user_id);
+			$this->template->load('user_page', $head_path, $body_path, $data);
+		}elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	public function my_minista_folder($folder_id = 1) {
+		$head_path = $this->path . 'my_minista_folder_head';
+		$body_path = $this->path . 'my_minista_folder';
+
+		if ($this->tank_auth->is_logged_in()){
+			
+			$user_id = $this->tank_auth->get_user_id();
+			$data['articles'] = $this->My_minista_model->get_user_all_articles($user_id, $folder_id);
+			$this->template->load('user_page', $head_path, $body_path, $data);
+			
+		}elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	
+	// delete my minista_article
+	public function delete_my_minista_article(){
+		$user_id = $this->tank_auth->get_user_id();
+		$article_id = $this->input->post('article_id');
+
+		// user_id が正しいか確認する
+		$db_user_id = $this->My_minista_model->get_user_id_my_minista_article($article_id);
+		if($db_user_id == null || $db_user_id != $user_id){
+			redirect('minista/index');
+		}
+
+		$this->My_minista_model->delete_my_minista_article($article_id);
+		
+		$return_value = array(
+			'article_id' => $article_id
+		);
+		$this->_minista_ajax($return_value);
+	}
+
+	// add my folder
+	public function add_my_minista_folder(){
+		$MAX_NAME_LENGTH = 15;
+		if ($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$name = $this->input->post('name');
+			$query = $this->user->get_folder_max_count_by_id($user_id, 1);
+			$folder_max_count = $query->folder_max_count;
+			$folder_current_count = $this->My_minista_model->get_folder_current_count($user_id);
+			// validation
+			if(empty($name)){
+				$return_value = array(
+					'state' => $this->IS_ERROR,
+					'error_message' => 'フォルダ名が空です。'
+				);
+			}else	if(strlen($name) >= $MAX_NAME_LENGTH ){
+				$return_value = array(
+					'state' => $this->IS_ERROR,
+					'error_message' => 'フォルダ名は15文字以内で指定してください。'
+				);
+			}else if($folder_max_count <= $folder_current_count){
+				$return_value = array(
+					'state' => $this->IS_ERROR,
+					'error_message' => 'フォルダ数は'. $folder_max_count .'個までしか作れません。'
+				);
+			}else{
+				$insert_id = $this->My_minista_model->add_my_minista_folder($user_id, $name);
+				$return_value = array(
+					'state' => $this->IS_OK,
+					'insert_id' => $insert_id,
+					'name' => $name
+				);
+			}
+			$this->_minista_ajax($return_value);
+			
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+
+	// delete my minista folder
+	public function delete_my_minista_folder(){
+		if($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$folder_id = $this->input->post('folder_id');
+			
+			// user_id が正しいか確認する
+			$db_user_id = $this->My_minista_model->get_user_id_my_minista_folder($folder_id);
+			$this->My_minista_model->delete_my_minista_folder($folder_id);
+	
+			if($db_user_id == null || $db_user_id != $user_id) {
+				redirect('minista/index');
+			}		
+			$return_value = array(
+				'folder_id' => $folder_id
+			);
+			$this->_minista_ajax($return_value);			
+			
+		}elseif ($this->tank_auth->is_logged_in(FALSE)){
+			redirect('/auth/send_again/');
+		}else{
+			redirect('/minista/');
+		}
+	}
+
+	// delete my minista item
+	public function delete_my_minista_item(){
+		if($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$item_id = $this->input->post('item_id');
+			
+			// user_id が正しいか確認する
+			$db_user_id = $this->My_minista_model->get_user_id_my_minista_item($item_id);
+			$this->My_minista_model->delete_my_minista_item($item_id);
+	
+			if($db_user_id == null || $db_user_id != $user_id) {
+				redirect('minista/index');
+			}		
+			$return_value = array(
+				'item_id' => $item_id
+			);
+			$this->_minista_ajax($return_value);			
+			
+		}elseif ($this->tank_auth->is_logged_in(FALSE)){
+			redirect('/auth/send_again/');
+		}else{
+			redirect('/minista/');
+		}
+	}
+		
+	// add my minista
+	public function add_my_minista(){
+		if ($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$article_id = $this->input->post('article_id');
+			$folder_id = $this->input->post('folder_id');
+			$data = $this->Article_model->get_minista($article_id);
+			$insert_id = $this->My_minista_model->add_my_minista($user_id, $folder_id ,$data);
+			
+			$my_minista_max_count = $this->My_minista_model->get_article_max_count($user_id, $folder_id);
+			$my_minista_current_count = $this->My_minista_model->get_article_current_count($user_id, $folder_id);
+
+			if($my_minista_max_count <= $my_minista_current_count){
+				$return_value = array(
+					'state' => $this->IS_ERROR,
+					'error_message' => '登録できるministaの数は１フォルダにつき' . $my_minista_max_count . '個までです'
+				);
+			}else{
+				$return_value = array(
+					'state' => $this->IS_OK,
+					'insert_id' => $insert_id
+				);
+			}
+			$this->_regist_favorite($article_id);
+			$this->_minista_ajax($return_value);
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	
+	// add my minista item
+	public function add_my_minista_item(){
+		$MAX_NAME_LENGTH = 15;
+		if ($this->tank_auth->is_logged_in()){
+			$user_id = $this->tank_auth->get_user_id();
+			$title = $this->input->post('title');
+			$article_id = $this->input->post('article_id');
+			$explanation = $this->input->post('explanation');
+
+			$my_minista_item_current_count = $this->My_minista_model->get_my_minista_item_current_count($user_id, $article_id);
+			$error_message = '';
+
+			if(empty($title)){
+				$error_message = $error_message . 'タイトル名が空です。';
+			}else	if(strlen($title) >= $MAX_NAME_LENGTH ){
+				$error_message = $error_message . 'タイトル名は15文字以内で指定してください。';
+			}
+			
+			if(empty($explanation)){
+				$error_message = $error_message . '説明が空です。';
+			}else	if(strlen($explanation) >= $MAX_NAME_LENGTH ){
+				$error_message = $error_message . '説明は15文字以内で指定してください。';
+			}
+
+			if($this->MY_MINISTA_ITEM_MAX_COUNT <= $my_minista_item_current_count){
+				$error_message = '登録できるアイテム数は30個までです';
+			}
+			
+			if(!empty($error_message)){
+				$return_value = array(
+					'state' => $this->IS_ERROR,
+					'error_message' => $error_message
+				);
+			}else{
+				$insert_id = $this->My_minista_model->add_my_minista_item($user_id, $article_id, $title, $explanation);
+				$return_value = array(
+					'state' => $this->IS_OK,
+					'insert_id' => $insert_id,
+					'title' => $title,
+					'explanation' => $explanation
+				);
+			}
+			$this->_minista_ajax($return_value);
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	
+	public function config() {
+		$head_path = $this->path . 'config_head';
+		$body_path = $this->path . 'config';
+		
+		if ($this->tank_auth->is_logged_in()){
+			$this->template->load('user_page', $head_path, $body_path);
+		} elseif ($this->tank_auth->is_logged_in(FALSE)) {
+			redirect('/auth/send_again/');
+		} else {
+			redirect('/minista/');
+		}
+	}
+	
+	/*
+	|---------------------------------------------------------------------
+	| Template article page
+	|---------------------------------------------------------------------
+	 */
+	
+	public function my_minista_article($article_id = 1) {
+		$head_path = $this->path . 'my_minista_article_head';
+		$body_path = $this->path . 'my_minista_article';
+		
+		$user_id = $this->tank_auth->get_user_id();
+		
+		$data['article'] = $this->My_minista_model->get_user_article($user_id, $article_id);
+		$data['items'] = $this->My_minista_model->get_user_all_items($user_id, $article_id);
+		$this->template->load('article_page', $head_path, $body_path, $data);
+	}
+	
+	private function _minista_ajax($return_value){
+		$options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_PRETTY_PRINT;
+		header('X-Content-Type-Options: nosniff');
+		header('Content-Type: application/json; charset=UTF-8');
+		echo json_encode($return_value, $options);
+	}
+}
+?>

@@ -1,0 +1,96 @@
+.pure-button-success {
+  background: #1cb841; }
+
+.pure-button-error {
+  background: #ca3c3c; }
+
+.pure-button-warning {
+  background: #df7514; }
+
+.pure-button-secondary {
+  background: #42b8dd; }
+
+body {
+  color: #333; }
+  body a {
+    text-decoration: none !important; }
+  body a:hover {
+    text-decoration: underline !important; }
+
+.clearfix:after {
+  clear: both;
+  content: "";
+  display: block;
+  height: 0; }
+
+.container {
+  display: block;
+  height: auto;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 1000px; }
+  .container .main {
+    float: left;
+    margin-right: 20px;
+    width: 680px; }
+  .container .side {
+    float: right;
+    width: 300px; }
+    .container .side .ad-top-right {
+      margin-bottom: 20px; }
+    .container .side .minista-list-new {
+      margin-bottom: 20px; }
+      .container .side .minista-list-new h3 {
+        font-size: 16px;
+        margin: 0 0 10px 0; }
+      .container .side .minista-list-new .minista-list {
+        margin-bottom: 10px; }
+        .container .side .minista-list-new .minista-list .minista-text .minista-title {
+          font-size: 13px;
+          margin: 5px 0; }
+        .container .side .minista-list-new .minista-list .minista-text .minista-view {
+          color: #c0c0c0;
+          font-size: 10px;
+          margin: 0; }
+        .container .side .minista-list-new .minista-list .minista-text .minista-stock {
+          color: #c0c0c0;
+          font-size: 10px;
+          margin: 0 0 0 10px; }
+    .container .side .what-minista {
+      border: 5px solid #f0f0f0;
+      margin-bottom: 20px;
+      padding: 10px; }
+      .container .side .what-minista h3 {
+        font-size: 16px;
+        margin: 10px 0; }
+      .container .side .what-minista h4 {
+        font-size: 14px;
+        margin: 10px; }
+      .container .side .what-minista p {
+        font-size: 12px;
+        line-height: 150%;
+        margin: 5px 10px; }
+
+footer {
+  background-color: #f8f8f8;
+  height: 200px; }
+  footer .footer-wraper {
+    border-top: 1px solid #c0c0c0;
+    padding-top: 20px; }
+    footer .footer-wraper .bottom-menu p {
+      color: #999;
+      font-size: 12px;
+      text-align: center; }
+      footer .footer-wraper .bottom-menu p a {
+        color: #999; }
+    footer .footer-wraper .footer-logo {
+      margin: 0 auto;
+      width: 60px; }
+      footer .footer-wraper .footer-logo img {
+        width: 60px; }
+    footer .footer-wraper p {
+      color: #333;
+      font-size: 12px;
+      text-align: center; }
+      footer .footer-wraper p a {
+        color: #333; }

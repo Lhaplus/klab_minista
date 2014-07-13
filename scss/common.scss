@@ -1,0 +1,126 @@
+@charset "utf-8";
+
+.pure-button-success {
+	background: rgb(28, 184, 65);
+}
+.pure-button-error {
+	background: rgb(202, 60, 60);
+}
+.pure-button-warning {
+	background: rgb(223, 117, 20);
+}
+.pure-button-secondary {
+	background: rgb(66, 184, 221);
+}
+
+body {
+	color: #333;
+	a {
+		text-decoration: none !important;
+	}
+	a:hover {
+		text-decoration: underline !important;
+	}
+}
+.clearfix:after {
+	clear: both;
+	content: "";
+	display: block;
+	height: 0;
+}
+.container {
+	display: block;
+	height: auto;
+	margin: auto;
+	margin-bottom: 20px;
+	width: 1000px;
+	.main {
+		float: left;
+		margin-right: 20px;
+		width: 680px;
+	}
+	.side {
+		float: right;
+		width: 300px;
+		.ad-top-right {
+			margin-bottom: 20px;
+		}
+		.minista-list-new {
+			margin-bottom: 20px;
+			h3 {
+				font-size: 16px;
+				margin: 0 0 10px 0;
+			}
+			.minista-list {
+				margin-bottom: 10px;
+				.minista-text {
+					.minista-title {
+						font-size: 13px;
+						margin: 5px 0;
+					}
+					.minista-view {
+						color: #c0c0c0;
+						font-size: 10px;
+						margin: 0;
+					}
+					.minista-stock {
+						color: #c0c0c0;
+						font-size: 10px;
+						margin: 0 0 0 10px;
+					}
+				}
+			}
+		}
+		.what-minista {
+			border: 5px solid #f0f0f0;
+			margin-bottom: 20px;
+			padding: 10px;
+			h3 {
+				font-size: 16px;
+				margin: 10px 0;
+			}
+			h4 {
+				font-size: 14px;
+				margin: 10px;
+			}
+			p {
+				font-size: 12px;
+				line-height: 150%;
+				margin: 5px 10px;
+			}
+		}
+	}
+}
+footer {
+	background-color: #f8f8f8;
+	height: 200px;
+	.footer-wraper {
+		border-top: 1px solid #c0c0c0;
+		padding-top: 20px;
+		.bottom-menu {
+			p {
+				color: #999;
+				font-size: 12px;
+				text-align: center;
+				a {
+					color: #999;
+				}
+			}
+		}
+		.footer-logo {
+			margin: 0 auto;
+			width: 60px;
+			img {
+				width: 60px;
+			}
+		}
+		p {
+			color: #333;
+			font-size: 12px;
+			text-align: center;
+			a {
+				color: #333;
+			}
+		}
+	}
+}

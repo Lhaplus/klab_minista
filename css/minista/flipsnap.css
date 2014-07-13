@@ -1,0 +1,19 @@
+.viewport {
+    width: 600px;
+    overflow: hidden;
+    margin: 0 auto;
+    -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
+}
+
+#FlickrPhotos {
+    width: 2200px;
+}
+
+.item {
+    float: left;
+    width: 200px;
+    padding: 10px;
+    background: #EFEFEF;
+    color: #666;
+    display: inline-blocks;
+}

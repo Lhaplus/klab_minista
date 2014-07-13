@@ -1,0 +1,94 @@
+@charset 'utf-8';
+
+// extension ------------------------------------------------------------------
+
+// 汎用クラス
+// font設定
+// float,clear設定
+// リンクスタイル
+// ボタンサイズ
+// ボタンスタイル
+// ラベルサイズ
+// ラベルスタイル
+// アイコンスタイル
+// 背景色ありコンテンツ
+// clearfix
+
+// 汎用クラス --------------------------------------------------------------------
+
+// 余白調整用のクラス
+@for $i from 0 through 20 {
+    .mt#{$i * 5} {margin-top: 5px * $i !important;}
+    .mb#{$i * 5} {margin-bottom: 5px * $i !important;}
+    .mr#{$i * 5} {margin-right: 5px * $i !important;}
+    .ml#{$i * 5} {margin-left: 5px * $i !important;}
+    .pt#{$i * 5} {padding-top: 5px * $i !important;}
+    .pb#{$i * 5} {padding-bottom: 5px * $i !important;}
+    .pr#{$i * 5} {padding-right: 5px * $i !important;}
+    .pl#{$i * 5} {padding-left: 5px * $i !important;}
+}
+
+// font設定 ----------------------------------------------------------------------
+.font-bold {font-weight : bold;}// ふと文字
+.font-normal {font-weight: normal;}// 普通文字
+.txt-noline {text-decoration:none;}// アンダーライン非表示
+
+.color_a{color: $textColor_a;}
+.color_b{color: $textColor_b;}
+.color_c{color: $textColor_c;}
+.color_d{color: $textColor_d;}
+.color_e{color: $textColor_e;}
+
+
+// font-size
+.txt10{font-size: 10px;}
+.txt11{font-size: 11px;}
+.txt12{font-size: 12px;}
+.txt14{font-size: 14px;}
+.txt15{font-size: 15px;}
+.txt16{font-size: 16px;}
+.txt18{font-size: 18px;}
+.txt20{font-size: 20px;}
+.txt22{font-size: 22px;}
+.txt24{font-size: 24px;}
+.txt26{font-size: 26px;}
+.txt28{font-size: 28px;}
+.txt30{font-size: 30px;}
+
+// color
+.txtRed {color:$textColor_d!important;}//必須
+.txtGreen {color:#50C941;}
+.txtYellow {color: $textColor_f;}//警告文言
+
+
+// float,clear設定 ----------------------------------------------------------------
+
+.fl{float: left!important;}
+.fr{float: right!important;}
+.cb{clear: both!important;}
+
+
+// リンクスタイル -------------------------------------------------------------
+.link-style {
+  color: $linkColor_a;
+  &:hover {
+    color: $linkColor_b;
+    span {
+      text-decoration: none;
+      }//span
+  }//&:hover
+}
+
+
+// clearfix ---------------------------------------------------------------
+
+.clearfix {
+  *zoom: 1;
+  &:after {
+    content: '.';
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+  }
+}

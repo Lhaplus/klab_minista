@@ -1,0 +1,1 @@
+ALTER TABLE `recommend_map` ADD KEY `user_id` (`user_id`);

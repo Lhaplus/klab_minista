@@ -1,0 +1,149 @@
+<?php
+/*
+|--------------------------------------------------------------------------
+| 利用可能な変数一覧
+|
+| 'categories' = カテゴリ情報の配列．
+| categories[i]['id'] = id
+| categories[i]['name'] = カテゴリ名
+| categories[i]['regist_count'] = 登録数
+|--------------------------------------------------------------------------
+ */
+?>
+
+<div class="main-right">
+	<p>テスト</p>
+	<?php
+	echo form_open('minista/write_form');
+	echo 't_target:<br />';
+	$data = array(
+		'name' => 't_target',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />最低限<br />';
+	echo 't_do:<br />';
+	$data = array(
+		'name' => 't_do',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo 't_how_many:<br />';
+	$data = array(
+		'name' => 't_how_many',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo 't_what:<br />';
+	$data = array(
+		'name' => 't_what',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	
+	echo '<br /><br />';
+	
+	echo '[category]<br />';
+	$data = array(
+		'name' => 'category',
+		'style' => 'margin:10px',
+	);
+	foreach($categories as $category) {
+		$data['value'] = $category['id'];
+		echo $category['name'];
+		echo form_radio($data);
+	}
+	echo '<br /><br />';
+	
+	$data = array(
+		'name' => 'tags[]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo '[tag]<br />';
+	echo form_input($data);
+	echo '<br />';
+	echo form_input($data);
+	echo '<br />';
+	echo form_input($data);
+	echo '<br />';
+	echo form_input($data);
+	echo '<br />';
+	echo form_input($data);
+	
+
+	
+	echo '[item1]<br />';
+	echo 'title:<br />';
+	$data = array(
+		'name' => 'items[0][title]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo 'explanation:<br />';
+	$data = array(
+		'name' => 'items[0][explanation]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br /><br />';
+	
+	echo '[item2]<br />';
+	echo 'title:<br />';
+	$data = array(
+		'name' => 'items[1][title]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo 'explanation:<br />';
+	$data = array(
+		'name' => 'items[1][explanation]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br /><br />';
+	
+	echo '[item3]<br />';
+	echo 'title:<br />';
+	$data = array(
+		'name' => 'items[2][title]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo 'explanation:<br />';
+	$data = array(
+		'name' => 'items[2][explanation]',
+		'value' => '',
+		'size' => '50',
+		'style' => 'height:25',
+	);
+	echo form_input($data);
+	echo '<br />';
+	echo form_submit('write', 'write');
+	echo form_close();
+	?>
+</div><!-- main-right -->

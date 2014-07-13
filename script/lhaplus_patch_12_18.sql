@@ -1,0 +1,2 @@
+ALTER TABLE `category` ADD COLUMN `j_name` VARCHAR(256) NOT NULL;
+ALTER TABLE `category` MODIFY `j_name` VARCHAR(256) NOT NULL AFTER `name`;
