@@ -24,4 +24,8 @@ application/libraries/Pager.php
 application/libraries/rankng_time.php
 application/libraries/Template.php
 application/helpers/minista_helper.php
+application/language/japanese/minista_lang.php
 script/以下全て
+js/minista/以下全て
+js/css/以下全て
+js/scss/以下全て
