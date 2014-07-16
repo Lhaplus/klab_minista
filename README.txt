@@ -16,7 +16,7 @@ application/models/search_model.php
 application/models/tag_model.php
 application/models/user_history_model.php
 application/models/user_model.php
-application/views/以下全て
+application/views/以下全て（email, authにつきましては元々のソースがあり，そのソースを変更しています）
 application/libraries/debugger.php
 application/libraries/Device.php
 application/libraries/Minista_library.php
